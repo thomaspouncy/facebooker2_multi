@@ -11,7 +11,8 @@ module Facebooker2Multi
           end
         end
 
-        def fb_connect_async_js(app_id=Facebooker2Multi.app_id,options={},&proc)
+        def fb_connect_async_js(app_config,options={},&proc)
+          app_id = Facebooker2Multi.app_id(app_config)
           opts = Hash.new.merge!(options)
           cookie = opts[:cookie].nil? ? true : opts[:cookie]
           status = opts[:status].nil? ? true : opts[:status]
