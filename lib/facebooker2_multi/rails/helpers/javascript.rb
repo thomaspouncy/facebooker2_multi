@@ -1,8 +1,8 @@
-module Facebooker2
+module Facebooker2Multi
   module Rails
     module Helpers
       module Javascript
-        
+
         def fb_html_safe(str)
           if str.respond_to?(:html_safe)
             str.html_safe
@@ -10,8 +10,8 @@ module Facebooker2
             str
           end
         end
-        
-        def fb_connect_async_js(app_id=Facebooker2.app_id,options={},&proc)
+
+        def fb_connect_async_js(app_id=Facebooker2Multi.app_id,options={},&proc)
           opts = Hash.new.merge!(options)
           cookie = opts[:cookie].nil? ? true : opts[:cookie]
           status = opts[:status].nil? ? true : opts[:status]
@@ -42,11 +42,11 @@ module Facebooker2
           </script>
           JAVASCRIPT
           escaped_js = fb_html_safe(js)
-          if block_given? 
+          if block_given?
            concat(escaped_js)
            #return the empty string, since concat returns the buffer and we don't want double output
            # from klochner
-           "" 
+           ""
           else
            escaped_js
           end

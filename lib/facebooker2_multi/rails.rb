@@ -1,4 +1,4 @@
-module Facebooker2
+module Facebooker2Multi
   module Rails
   end
 end
