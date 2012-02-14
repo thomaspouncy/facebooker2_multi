@@ -7,31 +7,33 @@ module Facebooker2Multi
 
   class NotConfigured < Exception; end
   class << self
-    attr_accessor :api_key, :secret, :app_id, :cookie_prefix, :oauth2
+    attr_accessor :cookie_prefix, :oauth2, :configurations
   end
 
-  def self.secret
-    @secret || raise_unconfigured_exception
+  def self.api_key(app_config)
+    Facebooker2Multi.pull_from_configuration_or_throw_exception(app_config,"api_key")
   end
 
-  def self.app_id
-    @app_id || raise_unconfigured_exception
+  def self.secret(app_config)
+    Facebooker2Multi.pull_from_configuration_or_throw_exception(app_config,"secret")
   end
 
-  def self.raise_unconfigured_exception
-    raise NotConfigured.new("No configuration provided for Facebooker2Multi. Either set the app_id and secret or call Facebooker2Multi.load_facebooker_yaml in an initializer")
+  def self.app_id(app_config)
+    Facebooker2Multi.pull_from_configuration_or_throw_exception(app_config,"app_id")
   end
 
-  def self.configuration=(hash)
-    self.api_key = hash[:api_key]
-    self.secret = hash[:secret]
-    self.app_id = hash[:app_id]
+  def self.raise_unconfigured_exception(app_config)
+    raise NotConfigured.new("No configuration named #{app_config.inspect} provided for Facebooker2Multi. Make sure it is provided in the yaml file and the yaml file is loaded via Facebooker2Multi.load_facebooker_yaml on initialization.")
   end
+
+  # def self.configurations=(hash)
+  #   self.configurations = hash
+  # end
 
   def self.load_facebooker_yaml
     config = (YAML.load(ERB.new(File.read(File.join(::Rails.root,"config","facebooker.yml"))).result)[::Rails.env])
     raise NotConfigured.new("Unable to load configuration for #{::Rails.env} from facebooker.yml. Is it set up?") if config.nil?
-    self.configuration = config.with_indifferent_access
+    self.configurations = config.with_indifferent_access
   end
 
   def self.cast_to_facebook_id(object)
@@ -41,6 +43,14 @@ module Facebooker2Multi
       object.facebook_id
     else
       object
+    end
+  end
+
+  def self.pull_from_configuration_or_throw_exception(app_config,field)
+    if configurations[app_config] && configurations[app_config][field]
+      configurations[app_config][field]
+    else
+      raise_unconfigured_exception(app_config)
     end
   end
 end
