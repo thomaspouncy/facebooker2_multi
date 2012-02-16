@@ -140,7 +140,10 @@ module Facebooker2Multi
       end
 
       def facebook_params(app_config)
-        @facebook_param ||= fb_load_facebook_params(app_config)
+        if @facebook_param.nil?
+          @facebook_param = {}
+        end
+        @facebook_param[app_config] ||= fb_load_facebook_params(app_config)
       end
 
       def fb_load_facebook_params(app_config)
