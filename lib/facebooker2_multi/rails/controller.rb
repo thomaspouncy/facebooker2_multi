@@ -17,6 +17,9 @@ module Facebooker2Multi
         else
           fetch_client_and_user(app_config)
         end
+        if @_current_facebook_user.nil?
+          @_current_facebook_user = {}
+        end
         @_current_facebook_user[app_config]
       end
 
@@ -25,6 +28,9 @@ module Facebooker2Multi
           oauth2_fetch_client_and_user(app_config)
         else
           fetch_client_and_user(app_config)
+        end
+        if @_current_facebook_client.nil?
+          @_current_facebook_client = {}
         end
         @_current_facebook_client[app_config]
       end
@@ -236,7 +242,7 @@ module Facebooker2Multi
 
       def oauth2_fetch_client_and_user(app_config)
         return unless (@_fb_user_fetched.blank? || (@_fb_user_fetched && @_fb_user_fetched[app_config].blank?))
-        sig = oauth2_fetch_client_and_user_from_cookie(app_config) if (@_current_facebook_client.blank? || (@_current_facebook_client && @_current_facebook_client[app_config.blank?]))
+        sig = oauth2_fetch_client_and_user_from_cookie(app_config) if (@_current_facebook_client.blank? || (@_current_facebook_client && @_current_facebook_client[app_config].blank?))
         if @_fb_user_fetched.nil?
           @_fb_user_fetched = {}
         end
