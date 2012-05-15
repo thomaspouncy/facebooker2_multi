@@ -11,7 +11,7 @@ spec = Gem::Specification.new do |s|
   s.homepage = "http://developers.facebook.com/docs/api"
 
   s.add_dependency('mogli', ">=0.0.33")
-  s.add_dependency('ruby-hmac')
+  # s.add_dependency('ruby-hmac')
 
   s.add_development_dependency('rake', '~> 0.8.7')
   s.add_development_dependency('rspec', '~> 1.3.1')
