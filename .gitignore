@@ -1,5 +1,5 @@
 *.swp
 .bundle
-Gemfile.lock
 .rvmrc
+Gemfile.lock
 .idea
